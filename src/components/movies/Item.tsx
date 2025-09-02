@@ -15,7 +15,7 @@ export default function Item() {
       </div>
       <div>
         <p className="font-semibold ">Inter Star Wars 2: The Last Jehi</p>
-        <p>🗓️ 2017</p>
+        <p className="text-sm font-semibold">🗓️ 2017</p>
       </div>
     </li>
   )

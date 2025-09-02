@@ -1,6 +1,6 @@
 import Card from "./components/Card"
 import Header from "./components/Header"
-import Item from "./components/movies/item"
+import Item from "./components/movies/Item"
 
 function App() {
   return (
