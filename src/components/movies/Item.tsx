@@ -14,8 +14,11 @@ export default function Item() {
           alt="movie name" />
       </div>
       <div>
-        <p className="font-semibold ">Inter Star Wars 2: The Last Jehi</p>
-        <p className="text-sm font-semibold">🗓️ 2017</p>
+        <p className="font-semibold mb-2">Inter Star Wars 2: The Last Jehi</p>
+        <p className="flex justify-start items-center gap-1 text-sm font-normal">
+          <span>🗓️</span>
+          <span>2017</span>
+        </p>
       </div>
     </li>
   )
