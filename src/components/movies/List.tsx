@@ -1,12 +1,14 @@
+import type { Movie } from "../../types/movie";
 import Item from "./Item";
 
-export default function List() {
+export default function List({ movies }: { movies: Movie[] }) {
   return (
     <ul>
-      <Item />
-      <Item />
-      <Item />
-      <Item />
+      {
+        movies.map((movie) => (
+          <Item key={movie.imdbID} movie={movie} />
+        ))
+      }
     </ul>
   )
 }

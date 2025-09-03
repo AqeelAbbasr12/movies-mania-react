@@ -1,25 +1,27 @@
-export default function WatchedMovie() {
+import type { WatchedMovies } from "../types/movie";
+
+export default function WatchedMovie({ movie }: { movie: WatchedMovies }) {
   return (
     <li className="flex justify-start items-start gap-3 border-slate-500 border-b-2 p-4">
       <div className="w-10 rounded-md">
-        <img src="https://m.media-amazon.com/images/M/MV5BNGQyMWQ0ZjItMGMyOC00Y2RlLWIzZDQtZjhmZTdiNDdhOTdmXkEyXkFqcGc@._V1_SX300.jpg"
+        <img src={movie.poster}
           className="w-full rounded-sm"
           alt="movie name" />
       </div>
       <div>
-        <p className="font-semibold mb-2">Inter Star Wars 2: The Last Jehi</p>
-        <div className="flex justify-between items-center">
-          <div className="text-sm font-bold flex justify-start items-center gap-1">
+        <p className="font-semibold mb-2">{movie.title}</p>
+        <div className="flex justify-between items-center gap-3">
+          <div className="text-sm font-bold flex justify-start items-center">
             <span>⭐</span>
-            <span>8.65</span>
+            <span>{movie.imdbRating}</span>
           </div>
-          <div className="text-sm font-bold flex justify-start items-center gap-1">
+          <div className="text-sm font-bold flex justify-start items-center ">
             <span>🌟</span>
-            <span>9.5</span>
+            <span>{movie.userRating}</span>
           </div>
-          <div className="text-sm font-bold flex justify-start items-center gap-1">
+          <div className="text-sm font-bold flex justify-start items-center">
             <span>⌛</span>
-            <span>132 min</span>
+            <span>{movie.runtime} min</span>
           </div>
         </div>
       </div>
