@@ -1,17 +1,17 @@
 export type Movie = {
-  title: string,
-  year: string,
+  Title: string,
+  Year: string,
   imdbID: string,
-  poster: string,
+  Poster: string,
 }
 
 
 export type WatchedMovies = {
-  title: string,
-  year: string,
-  imdbID: string,
-  poster: string,
-  runtime: number,
+  Title: string,
+  Year: string,
+  ImdbID: string,
+  Poster: string,
+  Runtime: number,
   imdbRating: number,
   userRating: number
 }
