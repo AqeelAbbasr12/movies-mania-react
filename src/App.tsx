@@ -63,24 +63,25 @@ function App() {
   const API_KAY = '4e6406f7';
 
   useEffect(() => {
-    if (query.length < 3) return;
-
-    if (query.length === 0) {
+    if (query.length < 3) {
       setMovies([])
-    }
+    };
+
+    const controller = new AbortController();
 
     const fetchMovies = async () => {
       try {
-        const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KAY}&s=${query}`);
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KAY}&s=${query}`, { signal: controller.signal });
         const data = await res.json();
         if (data.Search.length > 0) {
-          setMovies(data.Search)
+          setMovies(data.Search || [])
         }
       } catch (error) {
         console.log("Something went wrong with the api. Please wait a bit and try again.", error)
       }
     }
     fetchMovies()
+    return () => controller.abort();
   }, [query]);
 
   return (
