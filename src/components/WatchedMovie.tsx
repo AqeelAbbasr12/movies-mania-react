@@ -4,12 +4,12 @@ export default function WatchedMovie({ movie }: { movie: WatchedMovies }) {
   return (
     <li className="flex justify-start items-start gap-3 border-slate-500 border-b-2 p-4">
       <div className="w-10 rounded-md">
-        <img src={movie.poster}
+        <img src={movie.Poster}
           className="w-full rounded-sm"
           alt="movie name" />
       </div>
       <div>
-        <p className="font-semibold mb-2">{movie.title}</p>
+        <p className="font-semibold mb-2">{movie.Title}</p>
         <div className="flex justify-between items-center gap-3">
           <div className="text-sm font-bold flex justify-start items-center">
             <span>⭐</span>
@@ -21,7 +21,7 @@ export default function WatchedMovie({ movie }: { movie: WatchedMovies }) {
           </div>
           <div className="text-sm font-bold flex justify-start items-center">
             <span>⌛</span>
-            <span>{movie.runtime} min</span>
+            <span>{movie.Runtime} min</span>
           </div>
         </div>
       </div>

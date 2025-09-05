@@ -7,58 +7,12 @@ import WatchedSummery from "./components/WatchedSummery"
 import type { Movie, WatchedMovies } from "./types/movie"
 import Details from "./components/movies/Details"
 
-// const tempMovieData: Movie[] = [
-//   {
-//     imdbID: "tt1375666",
-//     title: "Inception",
-//     year: "2010",
-//     poster:
-//       "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-//   },
-//   {
-//     imdbID: "tt0133093",
-//     title: "The Matrix",
-//     year: "1999",
-//     poster:
-//       "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
-//   },
-//   {
-//     imdbID: "tt6751668",
-//     title: "Parasite",
-//     year: "2019",
-//     poster:
-//       "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
-//   },
-// ];
-
-// const tempWatchedData: WatchedMovies[] = [
-//   {
-//     imdbID: "tt1375666",
-//     title: "Inception",
-//     year: "2010",
-//     poster:
-//       "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-//     runtime: 148,
-//     imdbRating: 8.8,
-//     userRating: 10,
-//   },
-//   {
-//     imdbID: "tt0088763",
-//     title: "Back to the Future",
-//     year: "1985",
-//     poster:
-//       "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-//     runtime: 116,
-//     imdbRating: 8.5,
-//     userRating: 9,
-//   },
-// ];
-
 function App() {
   const [query, setQuery] = useState("");
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [watched, setWatched] = useState([]);
-  const [selected, setSelected] = useState(true);
+  const [selectedMovieId, setSelectedMovieId] = useState('');
+  const [selectedMovie, setSelectedMovie] = useState({});
 
   const API_KAY = '4e6406f7';
 
@@ -73,8 +27,13 @@ function App() {
       try {
         const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KAY}&s=${query}`, { signal: controller.signal });
         const data = await res.json();
-        if (data.Search.length > 0) {
-          setMovies(data.Search || [])
+        if (data.Response === "True" && data.Search) {
+          const uniqueMovies: Movie[] = Array.from(
+            new Map(data.Search.map((m: Movie) => [m.imdbID, m])).values()
+          ) as Movie[];;
+          setMovies(uniqueMovies);
+        } else {
+          setMovies([]);
         }
       } catch (error) {
         console.log("Something went wrong with the api. Please wait a bit and try again.", error)
@@ -84,6 +43,22 @@ function App() {
     return () => controller.abort();
   }, [query]);
 
+  useEffect(() => {
+    if (!selectedMovieId) return;
+    const fetchMovie = async () => {
+      try {
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KAY}&i=${selectedMovieId}`);
+        const data = await res.json();
+        if (data) {
+          setSelectedMovie(data)
+        }
+      } catch (error) {
+        console.log("Something went wrong with the api. Please wait a bit and try again.", error)
+      }
+    }
+    fetchMovie()
+  }, [selectedMovieId])
+
   return (
     <>
       <div className="w-screen h-screen bg-gray-900 text-white p-2">
@@ -92,12 +67,12 @@ function App() {
         </div>
         <div className="w-full md:w-10/12 lg:w-8/12 mx-auto grid grid-cols-2 gap-2 justify-between items-center h-[calc(100vh-120px)] mt-5">
           <Card>
-            <List movies={movies} />
+            <List setSelectedMovieId={setSelectedMovieId} movies={movies} />
           </Card>
           <Card >
             {
-              selected ?
-                <Details /> :
+              selectedMovieId ?
+                <Details movie={selectedMovie} /> :
                 <>
                   <WatchedSummery watched={watched} />
                   <WatchedList watchedMovies={watched} />

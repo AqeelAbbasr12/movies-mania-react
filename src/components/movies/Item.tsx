@@ -1,8 +1,11 @@
 import type { Movie } from "../../types/movie";
 
-export default function Item({ movie }: { movie: Movie }) {
+export default function Item({ movie, setSelectedMovieId }: { movie: Movie, setSelectedMovieId: React.Dispatch<React.SetStateAction<string>> }) {
+  const selectMovie = (id: string) => {
+    setSelectedMovieId(id)
+  }
   return (
-    <li className="flex justify-start items-start gap-3 border-slate-500 border-b-2 p-4">
+    <li role="button" className="flex justify-start items-start gap-3 border-slate-500 border-b-2 p-4 cursor-pointer" onClick={() => selectMovie(movie.imdbID)}>
       <div className="w-10 rounded-md">
         <img src={movie.Poster}
           className="w-full rounded-sm"
